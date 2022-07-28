@@ -5,19 +5,23 @@ import com.mojang.blaze3d.systems.RenderSystem;
 
 import net.Applhau.jjkmod.JJKMod;
 import net.Applhau.jjkmod.client.Ability;
+import net.Applhau.jjkmod.network.Network;
+import net.Applhau.jjkmod.network.message.IncreaseHealth;
+import net.Applhau.jjkmod.network.message.SpeedToNormal;
 import net.Applhau.jjkmod.util.data.PlayerVariables;
 import net.Applhau.jjkmod.util.data.PlayerVariablesCapabilities;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.screen.Screen;
 import net.minecraft.client.gui.widget.button.Button;
 import net.minecraft.entity.Entity;
+import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.text.ITextComponent;
 import net.minecraft.util.text.TranslationTextComponent;
 
 public class StatGuiScreen extends Screen {
 
-    public static Entity player;
+    public static PlayerEntity player = Ability.player;
     private static final int BUTTON_WIDTH = 8;
 
     private static final int BUTTON_HEIGHT = 8;
@@ -80,12 +84,7 @@ public class StatGuiScreen extends Screen {
                 e -> {
                     if (true && Ability.healthStat <= 99 && Ability.statPoint > 0) {
                         // Action performed when the button is pressed
-                        player.getCapability(PlayerVariablesCapabilities.PLAYER_VARIABLES_CAPABILITY).ifPresent(capability -> {
-                            int health = (((player.getCapability(PlayerVariablesCapabilities.PLAYER_VARIABLES_CAPABILITY)
-                                .orElse(new PlayerVariables())).test) + 1);
-                            capability.test = health;
-                        });
-
+                        Network.Channel.sendToServer(new IncreaseHealth(31));
 
                         Ability.statPoint -= 1;
                     }
@@ -113,7 +112,7 @@ public class StatGuiScreen extends Screen {
         this.font.drawString(matrixStack, String.valueOf(Ability.strStat), this.width - 270, this.height - 225, -16777216);
         this.font.drawString(matrixStack, String.valueOf(Ability.spdStat), this.width - 270, this.height - 207, -16777216);
         this.font.drawString(matrixStack, String.valueOf(Ability.stmStat), this.width - 270, this.height - 187, -16777216);
-        this.font.drawString(matrixStack, String.valueOf(1), this.width - 270, this.height - 166, -16777216);
+        this.font.drawString(matrixStack, String.valueOf(health), this.width - 270, this.height - 166, -16777216);
         this.font.drawString(matrixStack, String.valueOf(Ability.ceStat), this.width - 270, this.height - 145, -16777216);
         this.font.drawString(matrixStack, String.valueOf(Ability.rceStat), this.width - 270, this.height - 125, -16777216);
         this.font.drawString(matrixStack, String.valueOf(Ability.statPoint), this.width - 270, this.height - 104, -16777216);
@@ -161,3 +160,4 @@ public class StatGuiScreen extends Screen {
 
     }
 }
+
