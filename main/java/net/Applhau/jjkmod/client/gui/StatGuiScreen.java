@@ -6,6 +6,7 @@ import com.mojang.blaze3d.systems.RenderSystem;
 import net.Applhau.jjkmod.JJKMod;
 import net.Applhau.jjkmod.client.Ability;
 import net.Applhau.jjkmod.network.Network;
+import net.Applhau.jjkmod.network.message.ClientUpdateHealth;
 import net.Applhau.jjkmod.network.message.IncreaseHealth;
 import net.Applhau.jjkmod.network.message.SpeedToNormal;
 import net.Applhau.jjkmod.util.data.PlayerVariables;
@@ -15,9 +16,12 @@ import net.minecraft.client.gui.screen.Screen;
 import net.minecraft.client.gui.widget.button.Button;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.entity.player.ServerPlayerEntity;
+import net.minecraft.network.play.client.CClientStatusPacket;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.text.ITextComponent;
 import net.minecraft.util.text.TranslationTextComponent;
+import net.minecraftforge.fml.network.PacketDistributor;
 
 public class StatGuiScreen extends Screen {
 
@@ -85,7 +89,7 @@ public class StatGuiScreen extends Screen {
                     if (true && Ability.healthStat <= 99 && Ability.statPoint > 0) {
                         // Action performed when the button is pressed
                         Network.Channel.sendToServer(new IncreaseHealth(31));
-
+                        Network.Channel.send(PacketDistributor.PLAYER.with(() -> ClientUpdateHealth.player), new ClientUpdateHealth(32));
                         Ability.statPoint -= 1;
                     }
                 }));
