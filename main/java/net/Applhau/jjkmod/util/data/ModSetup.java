@@ -10,11 +10,15 @@ import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent;
 @Mod.EventBusSubscriber(modid = JJKMod.MOD_ID, bus = Mod.EventBusSubscriber.Bus.FORGE)
 public class ModSetup {
 
+    @SubscribeEvent
     public static void setup(final FMLCommonSetupEvent event){
         IEventBus bus = MinecraftForge.EVENT_BUS;
         CapabilityJJKPlayerVariables.register();
 
-        bus.addGenericListener(Entity.class, JJKPlayerVariablesHandler::onAttackCapabilitiesPlayer);
+        FMLJavaModLoadingContext.get().getModEventBus().addGenericListener(Entity.class, JJKPlayerVariablesHandler::onAttackCapabilitiesPlayer);
         bus.addListener(JJKPlayerVariablesHandler::onPlayerCloned);
     }
+
+
+
 }
