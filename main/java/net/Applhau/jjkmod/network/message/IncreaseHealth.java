@@ -41,8 +41,7 @@ public class IncreaseHealth {
         NetworkEvent.Context context = contextSupplier.get();
         context.enqueueWork(() -> {
             ServerPlayerEntity player = context.getSender();
-            System.out.println(JJKClientVariables.getPlayertest());
-            player.sendMessage(new StringTextComponent(String.valueOf(JJKClientVariables.getPlayertest())), null);
+
 
             /*healthstat += 1;
             AttributeModifier health = new AttributeModifier(UUID.fromString("4ce2f114-cf35-11ec-9d64-0242ac120002"), "player_health", healthstat, AttributeModifier.Operation.ADDITION);
@@ -50,6 +49,9 @@ public class IncreaseHealth {
             player.getAttribute(Attributes.MAX_HEALTH).applyPersistentModifier(health);*/
             player.getCapability(JJKPlayerVariablesProvider.PLAYER_VARIABILITY).ifPresent(playertest -> {
                 playertest.addTest(1);
+                System.out.println(playertest.getVariable());
+                player.sendMessage(new StringTextComponent(String.valueOf(playertest.getVariable())), null);
+                System.out.println("done");
 
             });
 
